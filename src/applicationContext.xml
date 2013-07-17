@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/util
+http://www.springframework.org/schema/util/spring-util-3.0.xsd
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:annotation-config />
+	<!-- <context:property-placeholder location="file:///opt/app/APIS/config/SystemConfig.properties"/> -->
+  	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:ppproduction.properties</value>
+		</property>
+  	</bean>
+	<import resource="db-resource-config.xml"/>
+	
+	<bean id="WapBase" class="org.oauth.servelet.WapBase">
+		<property name="wapDAO" ref="WapDAO"/>
+	</bean>
+	<bean id="WapDAO" class="dao.WapDAO" scope="singleton">
+      <property name="sessionFactory" ref="HibernateSessionFactory"/>
+    </bean>
+	<context:component-scan base-package="org.oauth.servelet" />
+	<context:component-scan base-package="dao" />
+	
+</beans>

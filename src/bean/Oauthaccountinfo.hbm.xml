@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2011/2/20 ?U?? 04:58:06 by Hibernate Tools 3.3.0.GA -->
+<hibernate-mapping>
+    <class name="bean.Oauthaccountinfo" table="oauthaccountinfo">
+        <id name="id" type="string">
+            <column name="id" length="10" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="20"  />
+        </property>
+        <property name="tel" type="string">
+            <column name="tel" length="10"  />
+        </property>
+        <property name="mobile" type="string">
+            <column name="mobile" precision="10"  />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="20"  />
+        </property>
+        
+    </class>
+</hibernate-mapping>

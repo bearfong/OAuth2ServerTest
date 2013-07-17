@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- c3p0 -->
+	<bean id="APISDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass"><value>${System.database.driverClassName}</value></property>
+		<property name="jdbcUrl"><value>${System.database.url}</value></property>
+		<property name="user"><value>${System.database.username}</value></property>
+		<property name="password"><value>${System.database.password}</value></property>
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="initialPoolSize" value="10" />
+		<property name="maxIdleTime" value="60" />
+		<property name="acquireIncrement" value="0" />
+		<property name="maxStatements" value="0" />
+		<property name="maxStatementsPerConnection" value="100" />
+		<property name="idleConnectionTestPeriod" value="35" />
+		<property name="acquireRetryAttempts" value="10" />
+		<property name="breakAfterAcquireFailure" value="true" />
+		<property name="testConnectionOnCheckout" value="false" />
+		<property name="maxAdministrativeTaskTime" value="5" />
+		<property name="numHelperThreads" value="5"/>
+	    <!-- 把站著茅坑不拉屎的connection殺掉 -->
+	    <property name="unreturnedConnectionTimeout" value="1800"/>
+	    <!-- 追蹤哪個connection不拉屎 need set log4j com.mchange.v2.resourcepool.BasicResourcePool info value = true -->
+	    <property name="debugUnreturnedConnectionStackTraces" value="true"/>
+	</bean>
+	<bean id="HibernateSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+	    <property name="dataSource" ref="APISDataSource" />
+	      <property name="mappingResources">
+			<list>
+				<value>bean/Oauthaccountinfo.hbm.xml</value>
+			</list>
+	      </property>
+	    <property name="hibernateProperties">
+	      <props>
+	        <prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
+	        <!--<prop key="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop>-->
+	
+	
+	        <!-- 由hibernate建table schema -->
+	        <!-- <prop key="hibernate.h bm2ddl.auto">create</prop> -->
+	        <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+	        <!--<prop key="hibernate.dialect">org.hibernate.dialect.SybaseDialect</prop>-->
+	        <!-- 由log4j控制 -->
+	        <prop key="hibernate.show_sql">true</prop>
+	        <!-- 減少資料庫連結次數  不影響HQL、Criteria可覆寫-->
+	        <!--
+	        <prop key="hibernate.jdbc.fetch_size">50</prop>
+	        <prop key="hibernate.jdbc.batch_size">50</prop>
+	        -->
+			<prop key="hibernate.c3p0.max_size">20</prop>
+	        <prop key="hibernate.c3p0.min_size">1</prop>
+	        <prop key="hibernate.c3P0.minPoolSize">2</prop>
+	        <prop key="hibernate.c3P0.maxPoolSize">5</prop>
+	        <prop key="hibernate.c3P0.timeout">1800</prop>
+	        <!-- <prop key="hibernate.c3P0.timeout">600</prop> -->
+	        <prop key="hibernate.c3P0.max_statement">200</prop>
+			<prop key="hibernate.c3p0.idle_test_period">60</prop>
+			<!-- <prop key="hibernate.c3p0.idle_test_period">60</prop> -->
+	        <prop key="hibernate.c3p0.acquire_increment">2</prop>
+	        <prop key="hibernate.c3p0.validate">true</prop>
+			<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
+	      </props>
+	    </property>
+  	</bean>
+
+
+</beans>
